@@ -1,0 +1,55 @@
+# version: '3.9'
+
+# services:
+
+#   postgres:
+#     image: postgres
+#     restart: always
+#     environment:
+#       POSTGRES_USER: root
+#       DATABASE_HOST: 127.0.0.1
+#       POSTGRES_PASSWORD: root
+#       POSTGRES_DB: root
+#       DATABASE_PORT: 5432
+#     ports:
+#       - 5432:5432
+
+#   app:
+#     build: .
+#     ports:
+#       - 3000:3000
+#     environment:
+#       POSTGRES_USER: root
+#       DATABASE_HOST: postgres
+#       POSTGRES_PASSWORD: root
+#       POSTGRES_DB: root
+#       DATABASE_PORT: 5432
+#     depends_on:
+#       - postgres
+
+version: "3.8"
+services:
+  app:
+    container_name: nextjs-app
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/mydatabase
+    depends_on:
+      - db
+  db:
+    container_name: postgres-db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+
+volumes:
+  pgdata:

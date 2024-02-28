@@ -49,3 +49,14 @@ export async function insertChangelog({readmePath, version, date, author }: Chan
         return { data: null, error: err };
     }
 }
+export class ChangeLogService {
+    private dataSource;
+  
+    constructor(dataSource: any) {
+      this.dataSource = dataSource;
+    }
+  
+    async getChangelogs() {
+      return await this.dataSource.getChangeLogs();
+    }
+  }

@@ -1,5 +1,5 @@
-import { Pool } from 'pg';
-import dotenv from 'dotenv';
+import { Pool } from "pg";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -30,50 +30,44 @@ async function createChangelogTable() {
 
 const data = [
   {
-    readmePath: '../../content/employee-app.md',
-    date: '2024-01-19',
-    version: 'v 1.0.3',
-    author: 'Devzero-Inc'
+    readmePath: "../../content/employee-app.md",
+    date: "2024-01-19",
+    version: "v 1.0.3",
+    author: "Devzero-Inc",
   },
   {
-    readmePath: '../../content/photo-app.md',
-    date: '2024-01-29',
-    version: 'v 1.0.2',
-    author: 'Devzero-Inc'
+    readmePath: "../../content/photo-app.md",
+    date: "2024-01-29",
+    version: "v 1.0.2",
+    author: "Devzero-Inc",
   },
   {
-    readmePath: '../../content/roadmap-app.md',
-    date: '2024-02-02',
-    version: 'v 1.2.1',
-    author: 'Devzero-Inc'
+    readmePath: "../../content/roadmap-app.md",
+    date: "2024-02-02",
+    version: "v 1.2.1",
+    author: "Devzero-Inc",
   },
-  {
-    readmePath: '../../content/photo-app.md',
-    date: '2024-02-08',
-    version: 'v 1.6.0',
-    author: 'Devzero-Inc'
-  }
 ];
 
 export async function seedDatabase() {
   const client = await pool.connect();
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
 
     for (const { readmePath, date, version, author } of data) {
       await client.query(
-        'INSERT INTO changelog (readmePath, date, version, author) VALUES ($1, $2, $3, $4)',
+        "INSERT INTO changelog (readmePath, date, version, author) VALUES ($1, $2, $3, $4)",
         [readmePath, date, version, author]
       );
-      
-      console.log('Inserted:', readmePath);
+
+      console.log("Inserted:", readmePath);
     }
 
-    await client.query('COMMIT');
-    console.log('All data successfully inserted.');
+    await client.query("COMMIT");
+    console.log("All data successfully inserted.");
   } catch (err) {
-    await client.query('ROLLBACK');
-    console.error('Failed to insert seed data:', err);
+    await client.query("ROLLBACK");
+    console.error("Failed to insert seed data:", err);
   } finally {
     client.release();
   }
